@@ -10,8 +10,9 @@ namespace api.Services.OrderItemService {
     {
 
         private static List<OrderItem> items = new List<OrderItem>{
-            new OrderItem {ID = 1, Name = "some food", Price = 5.00},
-            new OrderItem()
+            new OrderItem {ID = 1, Name = "Pizza", Price = 15.00},
+            new OrderItem {ID = 2, Name = "Hamburger", Price = 10.00},
+            new OrderItem {ID = 3, Name = "Water", Price = 1.99}
         };
         public List<OrderItem> AddOrderItem(OrderItem item)
         {

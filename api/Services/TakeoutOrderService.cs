@@ -10,7 +10,7 @@ namespace api.Services.TakeoutOrderService  {
     public class TakeoutOrderService : ITakeoutOrderService {
         
         private static List<TakeoutOrder> takeoutOrders = new List<TakeoutOrder>{
-            new TakeoutOrder {ID = 1, Name = "Somebody", orderItems = {}},
+            new TakeoutOrder {ID = 1, Name = "Somebody", orderItems = {}, SubTotal = 0},
             new TakeoutOrder()
         };
         public List<TakeoutOrder> GetAllTakeoutOrders()   {
@@ -22,6 +22,7 @@ namespace api.Services.TakeoutOrderService  {
         }
 
         public List<TakeoutOrder> AddTakeoutOrder(TakeoutOrder order)   {
+            order.ID = takeoutOrders.Count;
             takeoutOrders.Add(order);
             return takeoutOrders;
         }

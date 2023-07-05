@@ -20,6 +20,7 @@ namespace api.Services.DeliveryOrderService {
             return deliveryOrders.FirstOrDefault(i => i.Id == id);
         }
         public List<DeliveryOrder> AddDeliveryOrder(DeliveryOrder deliveryOrder) {
+            deliveryOrder.Id = deliveryOrders.Count;
             deliveryOrders.Add(deliveryOrder);
             return deliveryOrders;
         }
