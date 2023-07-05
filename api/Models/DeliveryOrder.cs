@@ -4,5 +4,6 @@ namespace api.Models    {
         public string? Name { get; set;}
         public string? Address { get; set;}
         public List<OrderItem>? OrderItems { get; set;}
+        public double SubTotal { get; set;}
     }
 }

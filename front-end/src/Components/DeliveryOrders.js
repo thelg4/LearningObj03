@@ -10,21 +10,41 @@ function DeliveryOrders() {
     const [deliveryOrders, setDeliveryOrders] = useState([])
 
     const [deliveryData, setDeliveryData] = useState({
-        customerName: '',
+        name: '',
         address: '',
         orderItems: [],
         subtotal: 0,
     });
 
     const handleInputChange = (event, index) => {
+        // const { name, value } = event.target;
+        // setDeliveryData((prevData) => {
+        //   const updatedOrderItems = [...prevData.orderItems];
+        //   updatedOrderItems[index] = { ...updatedOrderItems[index], [name]: value };
+        //   return { ...prevData, orderItems: updatedOrderItems };
+        // });
         const { name, value } = event.target;
-        setDeliveryData((prevData) => {
-          const updatedOrderItems = [...prevData.orderItems];
-          updatedOrderItems[index] = { ...updatedOrderItems[index], [name]: value };
-          return { ...prevData, orderItems: updatedOrderItems };
-        });
+        setDeliveryData((prevData) => ({
+        ...prevData,
+        [name]: value,
+    }));
     };
-      
+
+    const handleNameChange = (event) => {
+        const { value } = event.target;
+        setDeliveryData((prevData) => ({
+          ...prevData,
+          name: value,
+        }));
+    };
+    
+    const handleAddressChange = (event) => {
+        const { value } = event.target;
+        setDeliveryData((prevData) => ({
+            ...prevData,
+            address: value,
+        }));
+    };
 
     const handleOrderItemChange = (index, event) => {
         const { name, value } = event.target;
@@ -64,7 +84,7 @@ function DeliveryOrders() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(deliveryData),
+            body: JSON.stringify(updatedDeliveryData),
           });
     
           if (response.ok) {
@@ -100,6 +120,7 @@ function DeliveryOrders() {
         <div className="card-body">
             <div>
               <h1 className="text-center text-xl font-bold">Current Delivery Orders</h1>
+              <div className="divider"></div>
 
               {/* Item has properties: id, name, price */}
               <div className="overflow-x-auto">
@@ -121,26 +142,43 @@ function DeliveryOrders() {
                                 <th>{deliveryOrder.id}</th>
                                 <td>{deliveryOrder.name}</td>
                                 <td>{deliveryOrder.address}</td>
-                                {/* <td>{orderItem.price}</td> */}
+                                <td>{deliveryOrder.subTotal}</td>
                             </tr>
 
                         ))}
                         </tbody>
                     </table>
+                    <div className="divider"></div>
 
-                    <div className="flex justify-center space-x-2">
-                        <button className="btn btn-info" type="button" onClick={fetchDeliveryOrderData}>Refresh Menu Items</button>
+                    <div className="flex justify-center space-x-2 pt-2">
+                        <button className="btn btn-info w-52" type="button" onClick={fetchDeliveryOrderData}>Refresh Menu Items</button>
                         {/* Open the modal using ID.showModal() method */}
-                        <button className="btn btn-primary" onClick={()=>window.my_modal_1.showModal()}>Add Delivery Order</button>
+                        <button className="btn btn-primary w-52" onClick={()=>window.my_modal_1.showModal()}>Add Delivery Order</button>
                         <dialog id="my_modal_1" className="modal">
                             <form onSubmit={handleSubmit} method="dialog" className="modal-box">
                                 <h3 className="text-center font-bold text-lg">Add Delivery Order</h3>
 
                                 <div className="flex flex-col space-y-4">
                                     <p className="text-md font-bold">Name For Order</p>
-                                    <input type="text" id="name" name="name" value={deliveryData.customerName} onChange={handleInputChange} placeholder="Type here" className="input input-bordered input-info w-full max-w-xs" />
+                                    <input 
+                                        type="text" 
+                                        id="name" 
+                                        name="name" 
+                                        value={deliveryData.name} 
+                                        onChange={handleNameChange} 
+                                        placeholder="Type here" 
+                                        className="input input-bordered input-info w-full max-w-xs" 
+                                    />
                                     <p className="text-md font-bold">Address</p>
-                                    <input type="text" id="address" name="address" value={deliveryData.address} onChange={handleInputChange} placeholder="Type here" className="input input-bordered input-info w-full max-w-xs" />
+                                    <input 
+                                        type="text" 
+                                        id="address" 
+                                        name="address" 
+                                        value={deliveryData.address} 
+                                        onChange={handleAddressChange}
+                                        placeholder="Type here" 
+                                        className="input input-bordered input-info w-full max-w-xs" 
+                                    />
                                     <div>
                                         <div className="divider"></div>
                                         <h2 className="text-lg font-bold text-center pb-4">Order Items</h2>
@@ -149,18 +187,23 @@ function DeliveryOrders() {
                                             <div key={index}>
                                                 <div className="flow-root space-y-2">
                                                     <label className="text-md font-bold float-left px-4 py-4" for={`itemName-${index}`}>Item Name:</label>
-                                                    <input type="text" id={`itemName-${index}`} name="itemName" className="input input-bordered input-info float-right w-full max-w-xs"
-                                                        value={orderItem.itemName} onChange={(event) => handleOrderItemChange(index, event)} />
+                                                    <input type="text" 
+                                                        id={`itemName-${index}`} 
+                                                        name="itemName" 
+                                                        className="input input-bordered input-info float-right w-full max-w-xs"
+                                                        value={orderItem.itemName} 
+                                                        onChange={(event) => handleOrderItemChange(index, event)} 
+                                                    />
                                                 </div>
                                                 <div className="flow-root space-y-2">
                                                     <label className="text-md font-bold float-left px-4 py-4" htmlFor={`price-${index}`}>Price:</label>
                                                     <input
-                                                    className="input input-bordered input-info float-right w-full max-w-xs inset-y-0 left-0"
-                                                    type="text"
-                                                    id={`price-${index}`}
-                                                    name="price"
-                                                    value={orderItem.price}
-                                                    onChange={(event) => handleInputChange(event, index)}
+                                                        className="input input-bordered input-info float-right w-full max-w-xs inset-y-0 left-0"
+                                                        type="text"
+                                                        id={`price-${index}`}
+                                                        name="price"
+                                                        value={orderItem.price}
+                                                        onChange={(event) => handleInputChange(event, index)}
                                                     />
                                                 </div>
                                                 <div className="divider"></ div>
