@@ -103,7 +103,7 @@ function OrderItems() {
                         <button className="btn btn-primary" onClick={()=>window.my_modal_2.showModal()}>Add Menu Item</button>
                         <dialog id="my_modal_2" className="modal">
                             <form onSubmit={handleSubmit} method="dialog" className="modal-box">
-                                <h3 className="text-center font-bold text-xl">Add Menu Item</h3>
+                                <h3 className="text-center font-bold text-xl pb-2">Add Menu Item</h3>
                                     <div className="flex flex-col space-y-4">
                                         <p className="text-md font-bold">Menu Item Name</p>
                                         <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} placeholder="Type here" className="input input-bordered input-info w-full max-w-xs" />
@@ -114,6 +114,8 @@ function OrderItems() {
                                     <div className="flex justify-center pt-4">
                                         <button type="submit" className="btn btn-primary">Add Item</button>
                                     </div>
+
+                                    <p className="text-center font-bold pt-2">Use the ESC key to exit</p>
                             </form>
                         </dialog>
                     </div>
